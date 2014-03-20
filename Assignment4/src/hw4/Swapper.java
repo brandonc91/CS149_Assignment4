@@ -13,14 +13,13 @@ public class Swapper {
 	public final int UNI_0 = 48;
 	public final int UNI_9 = 57;
 	
-	private LinkedList<Integer> main_memory;
+	private LinkedList<HashMap<Integer, Boolean>> main_memory;
 	private ArrayList<Process> processList;		// the main list of processes
 	private LinkedList<Process> processQueue;
 
 	public Swapper(int processCount) {
 		this.processList = makeProcessList(processCount);
-		main_memory = new LinkedList<Integer>();
-		main_memory.add(MEMSIZE);
+		main_memory = new LinkedList<HashMap<Integer, Boolean>>();
 	}
 	
 	public ArrayList<Process> makeProcessList(int processCount) {
@@ -51,25 +50,62 @@ public class Swapper {
 	}
 	
 	public void buildProcessQueue(int num) {
-		for (int i = 0; i < 0; i++) {
+		/* Copy processList from index 0 to num for a manageable LinkedList of Processes */
+		for (int i = 0; i < num; i++) {
 			processQueue.add(processList.get(i));
 		}
 	}
 	
+	public int getMemorySize(HashSet<Integer> nextBlock) {
+		ArrayList<Integer> blocks = new ArrayList<Integer>(nextBlock);
+		int block = 0;
+		for (int i = 0; i < blocks.size(); i++) {
+			block = blocks.get(i);
+		}
+		return block;
+	}
 
 	public void firstFit() {
-		// keep list of free blocks of memory
-		// when receiving request for memory, scan list for first block that is large enough to satisfy request
-		// if the block is significantly larger than requested, split block, add remainder to list as a free block
 		int availableMemory = MEMSIZE;
-		if (main_memory.size() == 1) {
-			main_memory.add(processList.get(0).size);
-			availableMemory -= processList.get(0).size;
-			main_memory.set(0, availableMemory);
-		}
-		while (availableMemory > 0) {
+		
+		/* Add first partition into memory */
+		int firstSize = processQueue.get(0).size;
+		availableMemory -= firstSize;
+		HashMap<Integer, Boolean> firstProcess = new HashMap<Integer, Boolean>();	// Using hashmap to show if memory block is free (boolean)
+		HashMap<Integer, Boolean> unusedMemory = new HashMap<Integer, Boolean>();
+		firstProcess.put(firstSize, false);				// initialize process swapped in as false
+		unusedMemory.put(availableMemory, true);		// initialize free memory as true
+		main_memory.add(firstProcess);
+		main_memory.add(unusedMemory);
+		
+		int i = 1;
+		Iterator<HashMap<Integer, Boolean>> iterator = main_memory.iterator();
+		while (iterator.hasNext() && availableMemory > 0) {
+			int processSize = processQueue.get(i).size;
+			/* Check to see if total available memory could possibly fit the process */
+			if (availableMemory > processSize) {
+				// look for empty block
+				
+				
+				availableMemory -= processSize;
+				HashMap<Integer, Boolean> processBlock = new HashMap<Integer, Boolean>();
+				HashMap<Integer, Boolean> unusedBlock = new HashMap<Integer, Boolean>();
+				
+				i++;
+			}
 			
 		}
+		
+		
+		
+//		if (main_memory.size() == 1 && main_memory.get(0) == MEMSIZE) {
+//			main_memory.set(0, processQueue.get(0).size);
+//			availableMemory -= processQueue.get(0).size;
+//			main_memory.add(availableMemory);
+//		}
+//		while (availableMemory > 0) {
+//			
+//		}
 		
 	}	
 

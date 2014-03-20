@@ -1,0 +1,135 @@
+package hw4;
+import java.util.*;
+
+public class Swapper {
+
+	public final int MEMSIZE = 100;
+
+	
+	public final int CAPITAL_A = 65;
+	public final int CAPITAL_Z = 90;
+	public final int SMALL_A = 97;
+	public final int SMALL_Z = 122;
+	public final int UNI_0 = 48;
+	public final int UNI_9 = 57;
+	
+	private LinkedList<HashMap<Integer, Boolean>> main_memory;
+	private ArrayList<Process> processList;		// the main list of processes
+	private LinkedList<Process> processQueue;
+
+	public Swapper(int processCount) {
+		this.processList = makeProcessList(processCount);
+		main_memory = new LinkedList<Integer>();
+	}
+	
+	public ArrayList<Process> makeProcessList(int processCount) {
+		// Make process name list for x amount of processes in the processList, A-Z
+		// if processCount > 26 it rolls over
+		int i = CAPITAL_A;
+		ArrayList<Integer> names = new ArrayList<Integer>();
+		for (int count = 0; count < processCount; count++) {
+			switch (i) {
+				case CAPITAL_Z + 1: i = SMALL_A;
+									break;
+				case SMALL_Z + 1:	i = UNI_0;
+									break;
+				case UNI_9 + 1:		i = CAPITAL_A;
+									break;
+				default:			break;
+			}
+			names.add(i);
+			i++;
+		}
+		ArrayList<Process> processes = new ArrayList<Process>();
+		// Make processes with IDs from ID list for x amount of processes in processList
+		for (i = 0; i < processCount; i++) {
+			char name = (char) names.get(i).intValue();
+			processes.add(new Process(name));
+		}
+		return processes;
+	}
+	
+	public void buildProcessQueue(int num) {
+		/* Copy processList from index 0 to num for a manageable LinkedList of Processes */
+		for (int i = 0; i < num; i++) {
+			processQueue.add(processList.get(i));
+		}
+	}
+	
+	public int scanIterator(HashSet<Integer> nextBlock) {
+		ArrayList<Integer> blocks = new ArrayList<Integer>(nextBlock);
+		int block = 0;
+		for (int i = 0; i < blocks.size(); i++) {
+			block = blocks.get(i);
+		}
+		return block;
+	}
+
+	public void firstFit() {
+		int availableMemory = MEMSIZE;
+		
+		/* Add first partition into memory */
+		int firstSize = processQueue.get(0).size;
+		availableMemory -= firstSize;
+		HashMap<Integer, Boolean> firstProcess = new HashMap<Integer, Boolean>();	// Using hashmap to show if memory block is free (boolean)
+		HashMap<Integer, Boolean> unusedMemory = new HashMap<Integer, Boolean>();
+		firstProcess.put(firstSize, false);				// initialize process swapped in as false
+		unusedMemory.put(availableMemory, true);		// initialize free memory as true
+		main_memory.add(firstProcess);
+		main_memory.add(unusedMemory);
+		
+		int i = 1;
+		Iterator<HashMap<Integer, Boolean>> iterator = main_memory.iterator();
+		while (iterator.hasNext() && availableMemory > 0) {
+			int processSize = processQueue.get(i).size;
+			/* Check to see if total available memory could possibly fit the process */
+			if (availableMemory > processSize) {
+				// look for empty block
+				Set<Integer> test = new HashSet<Integer>();
+				test = iterator.next().
+				test.
+				availableMemory -= processSize;
+				HashMap<Integer, Boolean> processBlock = new HashMap<Integer, Boolean>();
+				HashMap<Integer, Boolean> unusedBlock = new HashMap<Integer, Boolean>();
+				
+				i++;
+			}
+			
+		}
+		
+		
+		
+//		if (main_memory.size() == 1 && main_memory.get(0) == MEMSIZE) {
+//			main_memory.set(0, processQueue.get(0).size);
+//			availableMemory -= processQueue.get(0).size;
+//			main_memory.add(availableMemory);
+//		}
+//		while (availableMemory > 0) {
+//			
+//		}
+		
+	}	
+
+	public void nextFit() {
+
+	}
+
+	public void bestFit() {
+
+	}
+
+
+	// Run each algorithm 5 times simulating 1 minute each time to get an avg of the # of processes 
+	// successfully swapped into memory
+	
+	
+	public static void main(String[] args)
+	{
+		Swapper test = new Swapper(10);
+		for (Process p : test.processList) {
+			p.print();
+		}
+	}
+	
+	
+}
