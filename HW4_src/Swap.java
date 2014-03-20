@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class Swap {
 	static int minPartitionSize = 4; // process partitions (4, 8, 16, 32MB)
-	static int maxDuration = 5; // process runtime duration (1-5 sec)
+	static int maxDuration = 5;    // process runtime duration (1-5 sec)
 	static int memorySize = 100; // 100MB of main memory
 	
 	static int[] physicalMemory = new int[memorySize];
@@ -24,6 +24,15 @@ public class Swap {
 	
 	static File outputFile;
 	
+
+    public static int makeSize() {
+        int sizeRangeMin = 0;
+        int sizeRangeMax = 4;
+        int sizes[] = {5, 11, 17, 31};
+        int partitionSize = sizes[sizeRangeMin + (int) (Math.random() * sizeRangeMax)];
+        return partitionSize;
+    }
+
 	private static void emptyAll() {
 		for (int i = 0; i < memorySize; i++) { // empty memory
 			physicalMemory[i] = -1;
@@ -40,7 +49,7 @@ public class Swap {
         for (int i = 0; i < 200; i++) {
         	HashMap<String, Integer> process = new HashMap<String, Integer>();
         	int power = random.nextInt(4);
-        	int partitionSize = minPartitionSize * (int) Math.pow(2, power);
+        	int partitionSize = makeSize();
         	int time = random.nextInt(maxDuration) + 1;
         	
             process.put("processName", i);

@@ -18,11 +18,10 @@ public class Process {
 	}
 	
 	private static int makeSize() {
-		int sizeRangeMin = 0;
-		int sizeRangeMax = 4;
+		int min = 0;
+		int max = 4;
 		int sizes[] = {5, 11, 17, 31};
-		int partitionSize = sizes[sizeRangeMin + (int) (Math.random() * sizeRangeMax)];
-		return partitionSize;
+		return sizes[min + (int) (Math.random() * max)];
 	}
 
 	private static int makeBurst() {
