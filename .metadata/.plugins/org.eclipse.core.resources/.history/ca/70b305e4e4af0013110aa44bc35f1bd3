@@ -94,21 +94,24 @@ public class Swapper {
 				if (iterator.next().get(0) > processSize && iterator.next().get(1) == 1) {
 					iterator.remove();
 					ArrayList<Integer> process = new ArrayList<Integer>();
-					ArrayList<Integer> unusedBlock = new ArrayList<Integer>();
+					ArrayList<Integer> emptyBlock = new ArrayList<Integer>();
 					process.add(processSize);
 					process.add(0);
 					availableMemory -= processSize;
-					unusedBlock.add(availableMemory);
-					unusedBlock.add(1);
+					emptyBlock.add(availableMemory);
+					emptyBlock.add(1);
 					i++;
 				}
 
 
 			}
+
 		}
 
 	}
 
+
+}	
 
 public void nextFit() {
 

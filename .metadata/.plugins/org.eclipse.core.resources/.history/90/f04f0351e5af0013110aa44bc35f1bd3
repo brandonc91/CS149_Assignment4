@@ -10,13 +10,8 @@ public class Process {
 		this.id = id;
 		size = makeSize();
 		burst = makeBurst();
-		availability = 0;
 	}
 
-	public void freeMemory() {
-		availability = 1;
-	}
-	
 	private static int makeSize() {
 		int min = 0;
 		int max = 4;
