@@ -46,9 +46,7 @@ public class Page {
 	}
 	
 	/**
-	 * Simulate the FIFO Page Replacement Algorithm
-	 * @param referenceArrayy Array with 100 references 
-	 * @return Hit ratio of FIFO
+	 * Simulate the FIFO page replacement algorithm.
 	 */
 	protected static double FIFO(int[] referenceArray) {
 		System.out.println("\nTime\t\tFrame_1\t\tFrame_2\t\tFrame_3\t\tFrame_4\t\tHit?\t\tPage_In\t\tEvicted");
@@ -56,32 +54,32 @@ public class Page {
 		int faultCount = 0;
 		
 		// To store the simulation results at each time slices
-		int[] simTable = new int[pageNumber];
+		int[] simulationTable = new int[pageNumber];
 		
 		// Initialize all elements of the simulation table to -1
 		for (int i = 0; i < pageNumber; i++) {
-			simTable[i] = -1;
+			simulationTable[i] = -1;
 		}
 		for (int i = 0; i < totalPageReference; i++) {
 			int position = faultCount % pageNumber;
-			boolean isHit = checkHit(referenceArray[i], simTable);
+			boolean isHit = checkHit(referenceArray[i], simulationTable);
 			
 			if (isHit) {
 				hitCount++;
 				int hitPos = 0;
 				
 				for (int j = 0; j < pageNumber; j++) {
-					if (simTable[j] == referenceArray[i]) {
+					if (simulationTable[j] == referenceArray[i]) {
 						hitPos = j;
 						break;
 					}
 				}
-				printSimulation(i, simTable, isHit, referenceArray[i], simTable[hitPos]);
+				printSimulation(i, simulationTable, isHit, referenceArray[i], simulationTable[hitPos]);
 				continue;
 			}
-			int evicted = simTable[position];
-			simTable[position] = referenceArray[i];
-			printSimulation(i, simTable, isHit, referenceArray[i], evicted);
+			int evicted = simulationTable[position];
+			simulationTable[position] = referenceArray[i];
+			printSimulation(i, simulationTable, isHit, referenceArray[i], evicted);
 			faultCount++;
 		}
 		
@@ -89,41 +87,48 @@ public class Page {
 		return hitRatio;
 	}
 	
+	/**
+	 * Simulate the LFU page replacement algorithm.
+	 */
 	// when implementing, change method to: protected static double LFU(int[] referenceArray) {
 	protected static void LFU(int[] referenceArray) {
 		// need to implement
 		System.out.println("LFU code");
 	}
+	
+	/**
+	 * Simulate the LRU page replacement algorithm.
+	 */
 	protected static double LRU(int[] referenceArray) {
 		System.out.println("\nTime\t\tFrame_1\t\tFrame_2\t\tFrame_3\t\tFrame_4\t\tHit?\t\tPage_In\t\tEvicted");
 		int hitCount = 0;
 		
-		//To store the simulation results at each time slices
-		int[] simTable = new int[pageNumber];
+		// To store the simulation results at each time slices
+		int[] simulationTable = new int[pageNumber];
 		
-		//To store used record
+		// To store used record
 		int[] usedTime = new int[pageNumber];
 		
 		for (int i = 0; i < pageNumber; i++) {
-			simTable[i] = -1;
+			simulationTable[i] = -1;
 			usedTime[i] = -1;
 		}
 		
 		for (int i = 0; i < totalPageReference; i++) {
-			boolean isHit = checkHit(referenceArray[i], simTable);
+			boolean isHit = checkHit(referenceArray[i], simulationTable);
 			
 			if (isHit) {
 				hitCount++;
 				int hitPos = 0;
 				
 				for (int j = 0; j < pageNumber; j++) {
-					if (simTable[j] == referenceArray[i]) {
+					if (simulationTable[j] == referenceArray[i]) {
 						hitPos = j;
 						break;
 					}
 				}
 				usedTime[hitPos] = i;
-				printSimulation(i, simTable, isHit, referenceArray[i], simTable[hitPos]);
+				printSimulation(i, simulationTable, isHit, referenceArray[i], simulationTable[hitPos]);
 				continue;
 			}
 			int position = 0;
@@ -133,75 +138,81 @@ public class Page {
 					position = j;
 				}
 			}
-			int evicted = simTable[position];
-			simTable[position] = referenceArray[i];
+			int evicted = simulationTable[position];
+			simulationTable[position] = referenceArray[i];
 			usedTime[position] = i;
-			printSimulation(i, simTable, isHit, referenceArray[i], evicted);
+			printSimulation(i, simulationTable, isHit, referenceArray[i], evicted);
 		}
 		
 		double hitRatio = (double) hitCount / (double) totalPageReference;
 		return hitRatio;
 	}
 	
-	
+	/**
+	 * Simulate the Random Pick page replacement algorithm.
+	 */
 	protected static double Random(int[] referenceArray) {
 		System.out.println("\nTime\t\tFrame_1\t\tFrame_2\t\tFrame_3\t\tFrame_4\t\tHit?\t\tPage_In\t\tEvicted");
 		int hitCount = 0;
 		Random random = new Random();
 		
-		//To store the simulation results at each time slices
-		int[] simTable = new int[pageNumber];
+		// To store the simulation results at each time slices
+		int[] simulationTable = new int[pageNumber];
 		for (int i = 0; i < pageNumber; i++) {
-			simTable[i] = -1;
+			simulationTable[i] = -1;
 		}
 		
 		for (int i = 0; i < totalPageReference; i++) {
-			boolean isHit = checkHit(referenceArray[i], simTable);
+			boolean isHit = checkHit(referenceArray[i], simulationTable);
 			
 			if (isHit) {
 				hitCount++;
 				int hitPos = 0;
 				
 				for (int j = 0; j < pageNumber; j++) {
-					if (simTable[j] == referenceArray[i]) {
+					if (simulationTable[j] == referenceArray[i]) {
 						hitPos = j;
 						break;
 					}
 				}
-				printSimulation(i, simTable, isHit, referenceArray[i], simTable[hitPos]);
+				printSimulation(i, simulationTable, isHit, referenceArray[i], simulationTable[hitPos]);
 				continue;
 			}
+			
 			int position = 0;
-			int simTableCheck = 0;
-			while (simTableCheck < pageNumber) {
-				if(simTable[simTableCheck] == -1) break;
-				simTableCheck++;
+			int simulationTableCheck = 0;
+			while (simulationTableCheck < pageNumber) {
+				if(simulationTable[simulationTableCheck] == -1) break;
+				simulationTableCheck++;
 			}
 			
-			if (simTableCheck < pageNumber) {
-				position = simTableCheck;
+			if (simulationTableCheck < pageNumber) {
+				position = simulationTableCheck;
 			}
 			else {
 				position = random.nextInt(pageNumber);
 			}
-			int evicted = simTable[position];
-			simTable[position] = referenceArray[i];
-			printSimulation(i, simTable, isHit, referenceArray[i], evicted);
+			int evicted = simulationTable[position];
+			simulationTable[position] = referenceArray[i];
+			printSimulation(i, simulationTable, isHit, referenceArray[i], evicted);
 		}
 		
 		double hitRatio = (double) hitCount / (double) totalPageReference;
 		return hitRatio;
 	}
 	
-	private static void printSimulation(int time, int[] simTable, boolean isHit, int curRef, int evicted) {
+	/**
+	 * Print the simulation table
+	 */
+	private static void printSimulation(int time, int[] simulationTable, boolean isHit, int currentReference, int evicted) {
 		if (!printTable) {
 			return;
 		}
-		if (simTable.length == pageNumber) {
+		if (simulationTable.length == pageNumber) {
 			System.out.print(time+"\t\t");
 			
 			for (int i = 0; i < pageNumber; i++) {
-				System.out.print(simTable[i]+"\t\t");
+				System.out.print(simulationTable[i]+"\t\t");
 			}
 			if (isHit) {
 				System.out.print("Hit\t\t");
@@ -209,22 +220,28 @@ public class Page {
 			else {
 				System.out.print("Fault\t\t");
 			}
-			System.out.println(curRef + "\t\t" + evicted);
+			System.out.println(currentReference + "\t\t" + evicted);
 		}
 		else {
-			System.out.println("This is not the Simulation Table.");
+			System.out.println("Failed to generate the simulation table.");
 		}
 	}
 	
-	private static boolean checkHit(int ref, int[] simTable) {
-		for (int i = 0; i < simTable.length; i++) {
-			if (ref == simTable[i]) {
+	/**
+	 * Check if there is a page hit.
+	 */
+	private static boolean checkHit(int ref, int[] simulationTable) {
+		for (int i = 0; i < simulationTable.length; i++) {
+			if (ref == simulationTable[i]) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	/**
+	 * Calculate the average.
+	 */
 	private static double getAverage(double[] array) {
 		double result = 0;
 		
