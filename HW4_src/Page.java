@@ -11,7 +11,7 @@ import java.util.*;
 public class Page {
 	static final int pageNumber = 4; // 4 pages frames
 	static final int pageReference = 10; // 10 pages total (0-9)
-	static final int totalPageReference = 15; // 100 page references each run time (5 total)
+	static final int totalPageReference = 30; // 100 page references each run time (5 total)
 	static final boolean printTable = true;
 	
 	protected static int[] randomGen() {
@@ -126,7 +126,7 @@ public class Page {
 			position = 0;
 			//Check which one is least frequently used
 			for (int j = 0; j < pageNumber; j++) {
-				if (usedTime[position] > usedTime[j]) {
+				if (usedTime[j] < usedTime[position]) {
 					position = j;
 					isEvicted = true;
 				}
