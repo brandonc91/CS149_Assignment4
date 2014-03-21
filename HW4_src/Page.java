@@ -11,7 +11,7 @@ import java.util.*;
 public class Page {
 	static final int pageNumber = 4; // 4 pages frames
 	static final int pageReference = 10; // 10 pages total (0-9)
-	static final int totalPageReference = 100; // 100 page references each run time (5 total)
+	static final int totalPageReference = 15; // 100 page references each run time (5 total)
 	static final boolean printTable = true;
 	
 	protected static int[] randomGen() {
@@ -87,9 +87,69 @@ public class Page {
 	 * Simulate the LFU page replacement algorithm.
 	 */
 	// when implementing, change method to: protected static double LFU(int[] referenceArray) {
-	protected static void LFU(int[] referenceArray) {
-		// need to implement
-		System.out.println("LFU code");
+	protected static double LFU(int[] referenceArray) {
+		System.out.println("\nTime\t\tFrame_1\t\tFrame_2\t\tFrame_3\t\tFrame_4\t\tHit?\t\tPage_In\t\tEvicted");
+		int hitCount = 0, page, hitPos, position, evicted;
+		boolean isEvicted = false;
+		
+		// To store the simulation results at each time slices
+		int[] simulationTable = new int[pageNumber];
+				
+		// To store used record
+		int[] usedTime = new int[pageNumber];
+		
+		// Initialize everything to -1
+		for (int i = 0; i < pageNumber; i++) {
+			simulationTable[i] = -1;
+			usedTime[i] = 0;
+		}
+		
+		for (int i = 0; i < totalPageReference; i++) {
+			page = referenceArray[i];
+			boolean isHit = checkHit(page, simulationTable);
+			
+			
+			if (isHit) {
+				hitCount++;
+				hitPos = 0;
+				
+				for (int j = 0; j < pageNumber; j++) {
+					//Check if page to be added is already in the simTable
+					if (page == simulationTable[j]) {
+						hitPos = j;
+						break;
+					}
+				}
+				usedTime[hitPos]++;
+				printSimulation(i, simulationTable, isHit, page, simulationTable[hitPos]);
+				continue;
+			}
+			position = 0;
+			//Check which one is least frequently used
+			for (int j = 0; j < pageNumber; j++) {
+				if (usedTime[j] < usedTime[position]) {
+					position = j;
+					isEvicted = true;
+				}
+			}
+			if (position == 0) {
+				isEvicted = true;
+			}
+			//Evict the least frequently used one.
+			evicted = simulationTable[position];
+			//Reset it's usedTime position to 0
+			if (isEvicted && usedTime[position] != 0) {
+				usedTime[position] = 0;
+				isEvicted = false;
+			}
+			else {
+				usedTime[position]++;
+				isEvicted = false;
+			}
+			simulationTable[position] = page;
+			printSimulation(i, simulationTable, isHit, page, evicted);
+		}
+		return (double) hitCount / (double) totalPageReference;
 	}
 	
 	/**
@@ -275,12 +335,12 @@ public class Page {
 			System.out.print("\n---------- Run " + counter + " ----------");
 			int[] referenceArray = randomGen();
 			counter++;
-			// lfuArray[i] = LFU(referenceArray); // uncomment after implementation
+			lfuArray[i] = LFU(referenceArray); // uncomment after implementation
 		}
-		System.out.println("\nNot yet implemented"); // delete after implementation
+		//System.out.println("\nNot yet implemented"); // delete after implementation
 		System.out.println("\n===================================================================================================================");
 		
-		counter = 1;
+		/*counter = 1;
 		System.out.print("LRU Simulation\n------------------------------------------------------------------------------------------------------------------------");
 		for (int i = 0; i < SIM_TIME; i++) {
 			System.out.print("\n---------- Run " + counter + " ----------");
@@ -299,17 +359,17 @@ public class Page {
 			counter++;
 		}
 		System.out.println("\n===================================================================================================================");
-		
+		*/
 		// calculate averages
-		double fifoAvg = getAverage(fifoArray);
+		//double fifoAvg = getAverage(fifoArray);
 		double lfuAvg = getAverage(lfuArray);
-		double lruAvg = getAverage(lruArray);
-		double randomAvg = getAverage(randomArray);
+		//double lruAvg = getAverage(lruArray);
+		//double randomAvg = getAverage(randomArray);
 
 		System.out.println("\nAverage times for algorithms ...");
-		System.out.println("FIFO:\t\t" + fifoAvg);
+		//System.out.println("FIFO:\t\t" + fifoAvg);
 		System.out.println("LFU:\t\t" + lfuAvg + " !! not implemented !!"); // not yet implemented
-		System.out.println("LRU:\t\t" + lruAvg);
-		System.out.print("Random Pick:\t" + randomAvg);
+		//System.out.println("LRU:\t\t" + lruAvg);
+		//System.out.print("Random Pick:\t" + randomAvg);
 	}
 }
