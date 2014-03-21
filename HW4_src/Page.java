@@ -1,11 +1,9 @@
 import java.util.*;
-
-
 // NEED TO DO LFU
-
+// AND MFU
 
 /**
- * Simulate the paging algorithms FIFO, LFU, LRU, and Random Pick.
+ * Simulate the paging algorithms FIFO, LFU, LRU, MRU and Random Pick.
  * Spring 2014, CS149-02 Mak
  * @author HotCheetOS
  */
@@ -82,9 +80,7 @@ public class Page {
 			printSimulation(i, simulationTable, isHit, referenceArray[i], evicted);
 			faultCount++;
 		}
-		
-		double hitRatio =  (double) hitCount / (double) totalPageReference;
-		return hitRatio;
+		return (double) hitCount / (double) totalPageReference;
 	}
 	
 	/**
@@ -94,6 +90,14 @@ public class Page {
 	protected static void LFU(int[] referenceArray) {
 		// need to implement
 		System.out.println("LFU code");
+	}
+	
+	/**
+	 * Simulate the MFU page replacement algorithm.
+	 */
+	protected static void MFU(int[] referenceArray) {
+		// need to implement
+		System.out.println("MFU code");
 	}
 	
 	/**
@@ -143,9 +147,7 @@ public class Page {
 			usedTime[position] = i;
 			printSimulation(i, simulationTable, isHit, referenceArray[i], evicted);
 		}
-		
-		double hitRatio = (double) hitCount / (double) totalPageReference;
-		return hitRatio;
+		return (double) hitCount / (double) totalPageReference;
 	}
 	
 	/**
@@ -196,9 +198,7 @@ public class Page {
 			simulationTable[position] = referenceArray[i];
 			printSimulation(i, simulationTable, isHit, referenceArray[i], evicted);
 		}
-		
-		double hitRatio = (double) hitCount / (double) totalPageReference;
-		return hitRatio;
+		return (double) hitCount / (double) totalPageReference;
 	}
 	
 	/**
@@ -231,10 +231,9 @@ public class Page {
 	 * Check if there is a page hit.
 	 */
 	private static boolean checkHit(int ref, int[] simulationTable) {
-		for (int i = 0; i < simulationTable.length; i++) {
-			if (ref == simulationTable[i]) {
+		for (int val : simulationTable) {
+			if (ref == val)
 				return true;
-			}
 		}
 		return false;
 	}
@@ -244,12 +243,10 @@ public class Page {
 	 */
 	private static double getAverage(double[] array) {
 		double result = 0;
-		
-		for (int i = 0; i < array.length; i++) {
-			result += array[i];
+		for (double item : array) {
+			result += item;
 		}
-		result = result / array.length;
-		return result;
+		return result / array.length;
 	}
 	
 	public static void main(String[] args) {
