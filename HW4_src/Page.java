@@ -1,6 +1,4 @@
 import java.util.*;
-// NEED TO DO LFU
-// AND MFU
 
 /**
  * Simulate the paging algorithms FIFO, LFU, LRU, MRU and Random Pick.
@@ -11,7 +9,7 @@ import java.util.*;
 public class Page {
 	static final int pageNumber = 4; // 4 pages frames
 	static final int pageReference = 10; // 10 pages total (0-9)
-	static final int totalPageReference = 30; // 100 page references each run time (5 total)
+	static final int totalPageReference = 100; // 100 page references each run time (5 total)
 	static final boolean printTable = true;
 	
 	protected static int[] randomGen() {
@@ -165,7 +163,7 @@ public class Page {
 		// To store used record
 		int[] usedTime = new int[pageNumber];
 		
-		// Initialize everything to -1
+		// SimTable to -1 and usedTime to 0
 		for (int i = 0; i < pageNumber; i++) {
 			simulationTable[i] = -1;
 			usedTime[i] = 0;
@@ -181,7 +179,7 @@ public class Page {
 				hitPos = 0;
 				
 				for (int j = 0; j < pageNumber; j++) {
-					//Check if page to be added is already in the simTable
+					//Get the position of the page that was hit.
 					if (page == simulationTable[j]) {
 						hitPos = j;
 						break;
@@ -193,9 +191,13 @@ public class Page {
 			}
 			position = 0;
 			//Check which one is most frequently used
-			//**** NEEDS FIXING ****
 			for (int j = 0; j < pageNumber; j++) {
-				if (usedTime[j] > usedTime[position]) {
+				if (simulationTable[j] == -1) {
+					position = j;
+					isEvicted = true;
+					break;
+				}
+				else if (usedTime[j] > usedTime[position]) {
 					position = j;
 					isEvicted = true;
 				}
