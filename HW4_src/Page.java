@@ -1,5 +1,4 @@
 import java.util.*;
-// NEED TO DO LFU
 // AND MFU
 
 /**
