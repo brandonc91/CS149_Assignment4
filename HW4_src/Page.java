@@ -1,4 +1,8 @@
 import java.util.*;
+<<<<<<< HEAD
+=======
+// AND MFU
+>>>>>>> FETCH_HEAD
 
 /**
  * Simulate the paging algorithms FIFO, LFU, LRU, MRU and Random Pick.
